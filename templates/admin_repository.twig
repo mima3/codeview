@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>レポジトリの一覧</title>
+    <link rel="stylesheet" href="{{BASE_PATH}}/css/bulma.min.css">
+    <script src="{{BASE_PATH}}/js/vendor/fontawesome.js"></script>
+    <script src="{{BASE_PATH}}/js/vendor/promise-7.0.4.min.js"></script>
+    <script src="{{BASE_PATH}}/js/vendor/vue.js"></script>
+    <script src="{{BASE_PATH}}/js/vendor/axios.min.js"></script>
+    
+    <script src="{{BASE_PATH}}/js/bulma_dialog.js"></script>
+    <script src="{{BASE_PATH}}/js/repository.js"></script>
+</head>
+<body>]
+    <section style="display:none" id="container_repository" class="section">
+        <h1 class="title">レポジトリの一覧</h1>
+        <bulmadialog-component ref="dialog"></bulmadialog-component>
+        <article class="message is-danger" v-if="errors.length">
+            <b>Please correct the following error(s):</b>
+            <div class="message-body">
+                <ul>
+                    <li v-html="" v-for="error in errors">${ error }</li>
+                </ul>
+            </div>
+        </article>
+        <div class="table-container">
+            <table class="table is-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            名前
+                        </th>
+                        <th>
+                            リモート
+                        </th>
+                        <th>
+                            ブランチ
+                        </th>
+                        <th>
+                            ローカル
+                        </th>
+                        <th>
+                            最終コミット
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody v-bind:disabled="isProcessing">
+                    {% for repository in repositories %}
+                        <tr>
+                            <td>
+                                 <a href="{{BASE_PATH}}/fileview/{{repository.id}}">{{repository.name}}</a>
+                            </td>
+                            <td>
+                                <a href="{{repository.remort}}">{{repository.remort}}</a>
+                            </td>
+                            <td>
+                                {{repository.branch}}
+                            </td>
+                            <td>
+                                {{basename(repository.local)}}
+                            </td>
+                            <td>
+                                 <a href="{{BASE_PATH}}/commitlog/{{repository.id}}">{{repository.head_date}}</a>
+                            </td>
+                            <td>
+                                <button  @click="deleteRepository('delete/{{repository.id}}', '{{repository.name}}', $event)">
+                                    <i v-if="isProcessing" class="fas fa-spinner fa-pulse"></i>
+                                    <i v-else class="far fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="control">
+            <button @click="add" v-bind:class="{ 'is-loading': isProcessing }" class="button is-primary">
+            追加
+            </button>
+        </p>        
+    </section>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>レポジトリの追加</title>
+    <link rel="stylesheet" href="{{BASE_PATH}}/css/bulma.min.css">
+    <script src="{{BASE_PATH}}/js/vendor/fontawesome.js"></script>
+    <script src="{{BASE_PATH}}/js/vendor/promise-7.0.4.min.js"></script>
+    <script src="{{BASE_PATH}}/js/vendor/vue.js"></script>
+    <script src="{{BASE_PATH}}/js/vendor/axios.min.js"></script>
+    
+    <script src="{{BASE_PATH}}/js/repository_add_page.js"></script>
+</head>
+
+<body>
+    <section class="section">
+        <h1 class="title">レポジトリの追加</h1>
+        <div style="display:none" id="container_repository_add" class="container">
+            <fieldset v-bind:disabled="isProcessing">
+                <div class="field">
+                    <label class="label">Name</label>
+                    <p class="control">
+                        <input v-model="add_info.name" class="input" type="text" placeholder="e.g リポジトリA">
+                    </p>
+                </div>
+                <div class="field">
+                    <label class="label">Remote Path</label>
+                    <p class="control">
+                        <input v-model="add_info.remote" class="input" type="text" placeholder="e.g https://github.com/mima3/railway_location.git">
+                    </p>
+                </div>
+                <div class="field">
+                    <label class="label">Branch</label>
+                    <p class="control">
+                        <input v-model="add_info.branch" class="input" type="text" placeholder="e.g master">
+                    </p>
+                </div>
+                <div>
+                <article class="message is-danger" v-if="errors.length">
+                    <b>Please correct the following error(s):</b>
+                    <div class="message-body">
+                        <ul>
+                            <li v-html="" v-for="error in errors">${ error }</li>
+                        </ul>
+                    </div>
+                </article>
+                </div>
+                <div class="field is-grouped is-grouped-right">
+                    <p class="control">
+                        <button @click="add" v-bind:class="{ 'is-loading': isProcessing }" class="button is-primary">
+                        Submit
+                        </button>
+                    </p>
+                    <p class="control">
+                        <button @click="cancel" v-bind:class="{ 'is-loading': isProcessing }" class="button is-light">
+                        Cancel
+                        </button>
+                    </p>
+                </div>
+           </fieldset>
+        </div>
+    </section>
+</body>
+</html>

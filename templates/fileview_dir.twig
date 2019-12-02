@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="{{BASE_PATH}}/css/highlight/default.css">
+    <link rel="stylesheet" href="{{BASE_PATH}}/css/bulma.min.css">
+    <script src="{{BASE_PATH}}/js/vendor/fontawesome.js"></script>
+    
+</head>
+
+<body>
+    <section class="section">
+        Hello2 {{name}}!<bR>
+        {{params}}<br>
+        <div class="table-container">
+            <table class="table">
+                <tbody>
+                    {% for file in files %}
+                        <tr class="">
+                            <td>
+                                {% if file.is_dir == true %}
+                                    <i class="far fa-folder"></i>&nbsp;
+                                {% else %}
+                                    <i class="far fa-file-alt"></i>&nbsp;
+                                {% endif %}
+                                <a href="{{BASE_PATH}}/fileview/{{params}}/{{file.name|e}}">{{file.name|e}}</a>
+                            </td>
+                            <td>
+                                {{file.commit_id|e}}
+                            </td>
+                            <td>
+                                <a href="{{BASE_PATH}}/commitlog/{{params}}/{{file.name|e}}">Log</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+</html>

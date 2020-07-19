@@ -19,14 +19,16 @@
 <body>
     <section class="section">
         <h1 class="title">コミットログ</h1>
+        <a href="{{BASE_PATH}}/commitlog/{{repositoryId}}">ログの一覧</a>
         <div id="commitlog" style="display:none">
             <div class="content">
                 <div class="table-container">
                     <table class="table">
                         <tbody>
                             {% for commitlog in commitlogs %}
-                                <tr>
+                                <tr name="{{commitlog.commitId}}">
                                     <td>
+                                        <a name="{{commitlog.commitId}}"></a>
                                         <i v-show="!expands['{{commitlog.commitId}}']" class="fas fa-angle-right" @click="expand('{{commitlog.commitId}}')"></i>
                                         <i v-show="expands['{{commitlog.commitId}}']" class="fas fa-angle-down"  @click="collapse('{{commitlog.commitId}}')"></i>
                                         {{commitlog.commitShortId|e}}
@@ -41,7 +43,7 @@
                                         {{commitlog.date|e}}
                                     </td>
                                 </tr>
-                                <tr v-show="expands['{{commitlog.commitId}}']" >
+                                <tr>
                                     {# コミット時に修正したファイルの一覧を表示 #}
                                     <td colspan="4">
                                         <div class="table-container" >
@@ -51,13 +53,13 @@
                                                     <td>
                                                         {# 操作による分岐 #}
                                                         {% if opepath.ope == 1 %}
-                                                            <i class="fas fa-plus-circle"></i>&nbsp;{{opepath.path}}
+                                                            <i class="fas fa-plus-circle"></i>&nbsp;<a href="{{BASE_PATH}}/filediff/{{repositoryId}}/{{commitlog.commitId}}/{{opepath.path}}">{{opepath.path}}</a>
                                                         {% elseif opepath.ope == 2 %}
                                                             <i class="far fa-trash-alt"></i>&nbsp;{{opepath.path}}
                                                         {% elseif opepath.ope == 3 %}
                                                             <i class="far fa-edit"></i>&nbsp;<a href="{{BASE_PATH}}/filediff/{{repositoryId}}/{{commitlog.commitId}}/{{opepath.path}}">{{opepath.path}}</a>
                                                         {% elseif opepath.ope == 4 %}
-                                                            {{opepath.path}}→{{opepath.path2}}
+                                                            {{opepath.path}}→<a href="{{BASE_PATH}}/filediff/{{repositoryId}}/{{commitlog.commitId}}/{{opepath.path2}}">{{opepath.path2}}</a>
                                                         {% endif %}
                                                     </td>
                                                 </tr>
@@ -71,7 +73,6 @@
                     </table>
                 </div>
             </div>
-            {{ include("component/pagination.twig")}}
         </div>
     </section>
 </body>

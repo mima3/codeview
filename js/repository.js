@@ -61,7 +61,6 @@ window.addEventListener("load", function(event) {
             }
         },
         created () {
-            console.log('hoge is: ' + this.hoge);
             document.getElementById ('container_repository').style.display = ''; 
         }   
     });

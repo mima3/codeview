@@ -42,10 +42,9 @@ class AdminController extends ControllerBase
          
         return $this->view->render(
             $response,
-            'admin_repository.twig',
+            'main.twig',
             [
-                'BASE_PATH' => $this->config['BASE_PATH'],
-                'repositories' => $repositories
+                'BASE_PATH' => $this->config['BASE_PATH']
             ]
         );
     }

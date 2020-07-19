@@ -85,7 +85,10 @@ $app->post('/admin/repository/delete/{id}', \codeview\Controller\AdminController
 
 //
 $app->get('/fileview[/{params:.*}]', \codeview\Controller\FileViewController::class . ':view');
-$app->get('/commitlog/{repository_id}', \codeview\Controller\CommitLogController::class . ':view');
+$app->get('/commitlog/{repository_id}', \codeview\Controller\CommitLogController::class . ':list');
+$app->post('/commitlog/{repository_id}/update', \codeview\Controller\CommitLogController::class . ':update');
+$app->get('/commitlog/{repository_id}/{commit_id}', \codeview\Controller\CommitLogController::class . ':view');
 $app->get('/filediff/{repository_id}/{commit_id}[/{paths:.*}]', \codeview\Controller\FileDiffController::class . ':view');
+$app->get('/file/{repository_id}/{commit_id}[/{paths:.*}]', \codeview\Controller\FileController::class . ':view');
 
 $app->run();

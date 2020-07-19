@@ -66,7 +66,7 @@ class GitRepositoryEx extends \Cz\Git\GitRepository
             ->run(
                 "git show $commitId:$path"
             )->end()
-            ->output[0];
+            ->implode();
     }
 
     /**
@@ -162,5 +162,10 @@ class GitRepositoryEx extends \Cz\Git\GitRepository
         }
         $ret[] = $tmp;
         return $ret;
+    }
+
+    protected function implode() : string
+    {
+        return implode("\n", $this->output);
     }
 }

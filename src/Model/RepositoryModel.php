@@ -78,4 +78,17 @@ class RepositoryModel extends ModelBase
             ->delete_many();
         //$this->database->commit();
     }
+
+    public function update(int $repositoryId, string $commitId, string $date) : void
+    {
+        //$this->database->beginTransaction();
+
+        \ORM::for_table('repository')
+            ->where_equal('id', $repositoryId)
+            ->find_one()
+            ->set('head_id', $commitId)
+            ->set('head_date', $date)
+            ->save();
+        //$this->database->commit();
+    }    
 }

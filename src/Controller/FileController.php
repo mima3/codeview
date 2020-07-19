@@ -6,9 +6,9 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
- * ファイル差分表示用
+ * ファイル表示用
  */
-class FileDiffController extends ControllerBase
+class FileController extends ControllerBase
 {
     /**
      * ファイルの表示
@@ -27,20 +27,26 @@ class FileDiffController extends ControllerBase
         $repositoryId = $args['repository_id'];
 
         $repositoryModel = $this->container->get('repositoryModel');
-        $commitInfoModel = $this->container->get('commitInfoModel');
 
         $repository = $repositoryModel->getById($repositoryId);
-        $commit = $commitInfoModel->getByCommitId($repositoryId, $commitId, false);
-        return $this->view->render(
-            $response,
-            'filediff.twig',
+        $git = new \codeview\VerCtrl\Git\GitRepositoryEx($repository->local);
+        $contents = "";
+        try {
+            $contents = $git->getContents($commitId, $paths);
+        } catch(\Cz\Git\GitException $e) {
+            $contents = "";
+        }
+        $jsondata = json_encode(
             [
-                'BASE_PATH' => $this->config['BASE_PATH'],
+                'contents' => $contents,
                 'paths' => $paths,
                 'repositoryId' => $repositoryId,
-                'beforeCommitId' => $commit[0]->getParentId(),
-                'afterCommitId' => $commitId
+                'commitId' => $commitId,
             ]
         );
+        $response->getBody()->write($jsondata);
+        return $response
+          ->withHeader('Content-Type', 'application/json')
+          ->withStatus(200);
     }
 }

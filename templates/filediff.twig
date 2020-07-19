@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>diff {{paths}}</title>
+    <link rel="stylesheet" href="{{BASE_PATH}}/css/bulma.min.css">
+    <style type="text/css">
+      #prettydiff {
+        box-sizing: content-box;
+      }
+      #prettydiff .delete,#prettydiff .delete::before,#prettydiff .delete::after  {
+        background-color: initial;
+        content: initial;
+        display: initial;
+        left: initial;
+        position: initial;
+        top: initial;
+        transform: initial;
+        transform-origin: initial;
+        
+        -moz-appearance: initial;
+        -webkit-appearance: initial;
+        background-color: initial;
+        border: initial;
+        border-radius: initial;
+        cursor: initial;
+        pointer-events: initial;
+        display: initial;
+        flex-grow: initial;
+        flex-shrink: initial;
+        font-size: initial;
+        height: initial;
+        max-height: initial;
+        max-width: initial;
+        min-height: initial;
+        min-width: initial;
+        outline: initial;
+        position: initial;
+        vertical-align: initial;
+        width: initial;
+      }
+      #prettydiff .fa-edit {
+        cursor : pointer;
+      }
+    </style>
+    <link href="{{BASE_PATH}}/css/prettydiff/index.css" media="all" rel="stylesheet" type="text/css"/>
+    
+    <script src="{{BASE_PATH}}/js/vendor/fontawesome.js"></script>
+    <script src="{{BASE_PATH}}/js/vendor/prettydiff.js"></script>
+    <script src="{{BASE_PATH}}/js/vendor/promise-7.0.4.min.js"></script>
+    <script src="{{BASE_PATH}}/js/vendor/vue.js"></script>
+    <script src="{{BASE_PATH}}/js/vendor/axios.min.js"></script>
+
+    <script src="{{BASE_PATH}}/js/filediff.js"></script>
+
+</head>
+
+<body>
+    <input type="hidden" id="beforeCommitId" value="{{beforeCommitId}}" />
+    <input type="hidden" id="afterCommitId" value="{{afterCommitId}}" />
+    <input type="hidden" id="beforeCommitUrl" value="{{BASE_PATH}}/file/{{repositoryId}}/{{beforeCommitId}}/{{paths}}" />
+    <input type="hidden" id="afterCommitUrl" value="{{BASE_PATH}}/file/{{repositoryId}}/{{afterCommitId}}/{{paths}}" />
+    <section class="section">
+        <h1 class="title">{{paths}}</h1>
+        <a href="{{BASE_PATH}}/commitlog/{{repositoryId}}/{{afterCommitId}}">{{afterCommitId}}</a>
+        <div id="filediff"  style="display:none" >
+          <article class="message is-danger" v-if="errors.length">
+              <div class="message-body">
+                  <ul>
+                      <li v-html="" v-for="error in errors">${ error }</li>
+                  </ul>
+              </div>
+          </article>
+          <div class="white" id="prettydiff" >
+              <button class="button is-loading">Loading</button>
+          </div>
+        </div>
+    </section>
+</body>
+</html>
